@@ -1,0 +1,3 @@
+[submodule "docker-elk"]
+	path = elk
+	url = git@github.com:deviantony/docker-elk.git
