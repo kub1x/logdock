@@ -1,26 +1,29 @@
 # Inspired by: https://github.com/sheepkiller/kafka-manager-docker/blob/master/docker-compose.yml
 #      and by: https://github.com/deviantony/docker-elk/blob/master/docker-compose.yml
-version: '2'
+version: '3'
 services:
 
   zookeeper:
     build: zookeeper/
     ports:
-      - "2181:2181"
+      - "2181"
     networks:
-      - elk
+      - mq
 
   kafka:
     build: kafka/
     ports:
       - "9092:9092"
     networks:
-      - elk
+      - mq
     environment:
       - KAFKA_ADVERTISED_HOST_NAME
-      - KAFKA_ADVERTISED_PORT=9092
+      - KAFKA_BROKER_ID
+      - KAFKA_ADVERTISED_PORT
+      - KAFKA_CREATE_TOPICS=test:1:1,os-t1x-in:1:1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
       - KAFKA_DELETE_TOPIC_ENABLE=true
-      - KAFKA_LOG_RETENTION_HOURS=1
+      - KAFKA_LOG_RETENTION_HOUS=1
       - KAFKA_MESSAGE_MAX_BYTES=10000000
       - KAFKA_REPLICA_FETCH_MAX_BYTES=10000000
       - KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS=60000
@@ -34,7 +37,7 @@ services:
     ports:
       - "9000:9000"
     networks:
-      - elk
+      - mq
     environment:
       ZK_HOSTS: zookeeper:2181
       APPLICATION_SECRET: letmein
@@ -66,6 +69,7 @@ services:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
       - elk
+      - mq
     depends_on:
       - elasticsearch
       - kafka
@@ -85,4 +89,6 @@ services:
 networks:
 
   elk:
+    driver: bridge
+  mq:
     driver: bridge
