@@ -68,6 +68,19 @@ services:
     build: elasticsearch/
     volumes:
       - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      # NOTE you can mount a local file as a ES data storage
+      #- ./elasticsearch/data-storage:/usr/share/elasticsearch/data
+      #
+      # NOTE alternatively you can create a volume container "elasticsearch-volume"
+      # specify a local volume in its Dockerfile using:
+      #   VOLUME /usr/share/elasticsearch/data
+      # and connnect them using:
+      #   docker ... --volumes_from elasticsearch-volume ... elasticsearch
+      # and find where it stores data in "Volumes" section of this commands output:
+      #   docker inspect elasticsearch-volume
+      #
+      # NOTE docker-compose makes this simple using "volumes:" root section of this file below:
+      #- elasticsearch-volume: /usr/share/elasticsearch/data
     ports:
       - "9200:9200"
       - "9300:9300"
@@ -105,8 +118,11 @@ services:
       - elasticsearch
 
 networks:
-
   elk:
     driver: bridge
   mq:
     driver: bridge
+
+# NOTE enable for having autocreated volumes separated from containers
+#volumes:
+#  elasticsearch-volume:
