@@ -17,20 +17,38 @@ services:
     networks:
       - mq
     environment:
-      - KAFKA_ADVERTISED_HOST_NAME
-      - KAFKA_BROKER_ID
-      - KAFKA_ADVERTISED_PORT
-      - KAFKA_CREATE_TOPICS=test:1:1,os-t1x-in:1:1
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_DELETE_TOPIC_ENABLE=true
-      - KAFKA_LOG_RETENTION_HOUS=1
-      - KAFKA_MESSAGE_MAX_BYTES=10000000
-      - KAFKA_REPLICA_FETCH_MAX_BYTES=10000000
-      - KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS=60000
-      - KAFKA_NUM_PARTITIONS=2
-      - KAFKA_DELETE_RETENTION_MS=1000
+      # NOTE specify these to prevent autogeneration
+      #KAFKA_ADVERTISED_HOST_NAME: ""
+      #KAFKA_BROKER_ID: ""
+      #KAFKA_ADVERTISED_PORT: ""
+      # NOTE local setting of topics
+      KAFKA_CREATE_TOPICS: "test:1:1,os-t1x-in:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_DELETE_TOPIC_ENABLE: true
+      KAFKA_LOG_RETENTION_HOUS: 1
+      KAFKA_MESSAGE_MAX_BYTES: 10000000
+      KAFKA_REPLICA_FETCH_MAX_BYTES: 10000000
+      KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS: 60000
+      KAFKA_NUM_PARTITIONS: 2
+      KAFKA_DELETE_RETENTION_MS: 1000
+      # NOTE the "swarm" config
+      #KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
+      #KAFKA_ADVERTISED_PROTOCOL_NAME: OUTSIDE
+      #KAFKA_ADVERTISED_PORT: 9094
+      #KAFKA_PROTOCOL_NAME: INSIDE
+      #KAFKA_PORT: 9092
+      # NOTE autodetect hostname
+      #HOSTNAME_COMMAND: "docker info | grep ^Name: | cut -d' ' -f 2"
+      # NOTE autodetect generated broker_id
+      #BROKER_ID_COMMAND: "hostname | awk -F'-' '{print $2}'"
     depends_on:
       - zookeeper
+    #volumes:
+    # NOTE can specify kafka config files
+    #  - ./kafka/config/server.properties:/opt/kafka/config/server.properties
+    #  - ./kafka/config/log4j.properties:/opt/kafka/config/log4j.properties
+    # TODO why mount docker.sock?
+    #  - /var/run/docker.sock:/var/run/docker.sock
 
   kafka-manager:
     build: kafka-manager/
