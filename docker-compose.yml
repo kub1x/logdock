@@ -66,11 +66,19 @@ services:
       - mq
     environment:
       ZK_HOSTS: zookeeper:2181
+      # NOTE see followign link to explani APPLICATION_SECRET
+      # https://github.com/yahoo/kafka-manager/blob/master/conf/application.conf
       APPLICATION_SECRET: letmein
       KM_ARGS: -Djava.net.preferIPv4Stack=true
+      # NOTE we can specify path to config file
+      #KM_CONFIG: /path/to/km/file.conf
     depends_on:
       - zookeeper
       - kafka
+    # NOTE we can override default kafka config by remounting the conf directory
+    #      hopefully the $$ sytnax works correctly on volumes =j
+    #volumes:
+    #  - ./kafka-manager/config:/kafka-manager-$${KM_VERSION}/conf
 
   elasticsearch:
     build: elasticsearch/
