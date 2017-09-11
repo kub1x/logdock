@@ -54,13 +54,6 @@ services:
     #  - ./kafka/config/server.properties:/opt/kafka/config/server.properties
     #  - ./kafka/config/log4j.properties:/opt/kafka/config/log4j.properties
     #
-    # NOTE maybe previous could be as follows, because $KAFKA_HOME is specified
-    #      in the wurstmeister/kafka image's Dockerfile using ENV command.
-    #      See: https://docs.docker.com/compose/compose-file/#variable-substitution
-    #
-    #  - ./kafka/config/server.properties:$$KAFKA_HOME/config/server.properties
-    #  - ./kafka/config/log4j.properties:$$KAFKA_HOME/config/log4j.properties
-    #
     # TODO why mount docker.sock?
     #  - /var/run/docker.sock:/var/run/docker.sock
 
@@ -81,10 +74,8 @@ services:
     depends_on:
       - zookeeper
       - kafka
-    # NOTE we can override default kafka config by remounting the conf directory
-    #      hopefully the $$ sytnax works correctly on volumes =j
-    #volumes:
-    #  - ./kafka-manager/config:/kafka-manager-$${KM_VERSION}/conf
+    volumes:
+      - ./kafka-manager/config/logback.xml:/kafka-manager-1.3.1.8/conf/logback.xml
 
   elasticsearch:
     build: elasticsearch/
