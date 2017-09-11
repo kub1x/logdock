@@ -24,7 +24,7 @@ services:
       # NOTE local setting of topics
       KAFKA_CREATE_TOPICS: "test:1:1,os-t1x-in:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_DELETE_TOPIC_ENABLE: 1 #true
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
       KAFKA_LOG_RETENTION_HOUS: 1
       KAFKA_MESSAGE_MAX_BYTES: 10000000
       KAFKA_REPLICA_FETCH_MAX_BYTES: 10000000
