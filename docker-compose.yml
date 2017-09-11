@@ -1,7 +1,38 @@
 # Inspired by: https://github.com/sheepkiller/kafka-manager-docker/blob/master/docker-compose.yml
 #      and by: https://github.com/deviantony/docker-elk/blob/master/docker-compose.yml
-version: '3'
+version: '3.2'
 services:
+
+  #############
+  # syslog-ng #
+  #############
+  # Enabling syslog-ng's system(); source
+  # see: https://www.balabit.com/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html/configuring-source-system.html
+  #
+  #- type: bind
+  #- source: /dev/log
+  #- target: /dev/log
+  #- read_ondly: true
+
+  syslog-ng:
+    build: syslog-ng/
+    ports:
+      - "514:514"
+      - "601:601"
+      - "6514:6514"
+    networks:
+      - mq
+    volumes:
+      - "./syslog-ng/config/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf"
+      - type: bind
+        source: /var/log/
+        target: /var/log/
+        read_ondly: true
+
+
+  #########
+  # Kafka #
+  #########
 
   zookeeper:
     build: zookeeper/
@@ -79,6 +110,11 @@ services:
     #      hopefully the $$ sytnax works correctly on volumes =j
     #volumes:
     #  - ./kafka-manager/config:/kafka-manager-$${KM_VERSION}/conf
+
+
+  #######
+  # ELK #
+  #######
 
   elasticsearch:
     build: elasticsearch/
