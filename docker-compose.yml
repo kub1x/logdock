@@ -22,7 +22,7 @@ services:
       #KAFKA_BROKER_ID: ""
       #KAFKA_ADVERTISED_PORT: ""
       # NOTE local setting of topics
-      KAFKA_CREATE_TOPICS: "test:1:1,os-t1x-in:1:1"
+      KAFKA_CREATE_TOPICS: "test:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_DELETE_TOPIC_ENABLE: "true"
       KAFKA_LOG_RETENTION_HOUS: 1
@@ -111,7 +111,7 @@ services:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./logstash/pipeline:/usr/share/logstash/pipeline
     ports:
-      - "5000:5000" # TCP input
+      #- "5000:5000" # TCP input
       - "9600:9600" # API endpoint
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
