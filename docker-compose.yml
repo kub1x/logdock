@@ -111,7 +111,8 @@ services:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
       - ./logstash/pipeline:/usr/share/logstash/pipeline
     ports:
-      - "5000:5000"
+      - "5000:5000" # TCP input
+      - "9600:9600" # API endpoint
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
