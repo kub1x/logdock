@@ -16,7 +16,6 @@ services:
     build: kafka/
     ports:
       - "9092:9092"
-      - "1099:1099" # JMX
     networks:
       - mq
     environment:
@@ -34,8 +33,6 @@ services:
       KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS: 60000
       KAFKA_NUM_PARTITIONS: 2
       KAFKA_DELETE_RETENTION_MS: 1000
-      # JMX
-      KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=kafka -Dcom.sun.management.jmxremote.rmi.port=1099"
       JMX_PORT: 1099
       # NOTE the "swarm" config
       #KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INSIDE:PLAINTEXT,OUTSIDE:PLAINTEXT
